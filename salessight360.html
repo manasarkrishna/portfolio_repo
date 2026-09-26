@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SalesSight360 — Case Study | Manasa R Krishna</title>
+<meta name="description" content="SalesSight360: an end-to-end sales analytics platform in PostgreSQL, Python, and Tableau that corrected a 71–74% pipeline forecast overstatement.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap">
+    <a href="index.html#top" class="brand">Manasa R Krishna<span>.</span></a>
+    <nav class="main-nav" id="main-nav">
+      <a href="index.html#about">About</a>
+      <a href="index.html#projects">Projects</a>
+      <a href="index.html#experience">Experience</a>
+      <a href="index.html#research">Research</a>
+      <a href="index.html#contact">Contact</a>
+    </nav>
+    <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">☰</button>
+  </div>
+</header>
+
+<main>
+  <section class="case-hero">
+    <div class="wrap">
+      <a href="index.html#projects" class="breadcrumb">← All projects</a>
+      <div class="eyebrow">Multi-Channel Revenue Analytics Platform</div>
+      <h1>SalesSight360</h1>
+      <p class="sub">From messy CRM data to an executive-ready forecasting dashboard.</p>
+      <div class="hero-stat-row">
+        <div class="num">$419,995<small>Verified paid revenue analyzed</small></div>
+        <div class="num">71–74%<small>Pipeline forecast overstatement corrected</small></div>
+        <div class="num">51.8%<small>Blended win rate</small></div>
+      </div>
+      <div class="btn-row">
+        <a href="https://github.com/manasarkrishna/salessight360.git" target="_blank" rel="noopener" class="btn btn-primary">GitHub Repository</a>
+        <a href="https://public.tableau.com/app/profile/manasa.r.krishna/viz/SalesSight360SalesForecastAnalytics/ExecutiveSummary" target="_blank" rel="noopener" class="btn btn-ghost">Open in Tableau Public</a>
+        <a href="assets/Manasa_R_Krishna_Resume.pdf" class="btn btn-ghost" download>Download Résumé</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="case-section">
+    <div class="wrap">
+      <h2><span class="num-label">01</span>The Problem</h2>
+      <p>Leadership was reporting revenue and pipeline using flawed, unadjusted numbers — a common sales-ops failure mode where raw pipeline is treated as a reliable forecast. This project simulates that real-world problem end to end: synthetic CRM data generation, cleaning, star-schema modeling, SQL analysis, Python forecasting, and an interactive Tableau dashboard, all built solo over 15 days.</p>
+    </div>
+  </section>
+
+  <section class="case-section">
+    <div class="wrap">
+      <h2><span class="num-label">02</span>The Data</h2>
+      <p>A synthetic CRM dataset was generated with deliberately realistic messiness — duplicates, missing values, inconsistent formatting, and orphan records — to mirror what a real sales-ops handoff actually looks like, rather than starting from clean data.</p>
+      <div class="note-box"><strong>Note:</strong> The underlying CRM data is synthetic, generated with Faker to reflect realistic sales-pipeline patterns for this portfolio project.</div>
+    </div>
+  </section>
+
+  <section class="case-section">
+    <div class="wrap">
+      <h2><span class="num-label">03</span>Data Engineering &amp; Data Model</h2>
+      <div class="case-two-col">
+        <div>
+          <h3 style="font-size:1.05rem;">ETL</h3>
+          <p>A Python pipeline (pandas + SQLAlchemy) cleaned and standardized the raw CRM export and loaded it into PostgreSQL — deduplication, missing-value handling, and format normalization before anything hit the analytical model.</p>
+        </div>
+        <div>
+          <h3 style="font-size:1.05rem;">Star schema</h3>
+          <p>The cleaned data was modeled into a PostgreSQL star schema — 5 dimension tables and 2 fact tables with enforced foreign keys — built for reliable, repeatable SQL analysis rather than one-off queries.</p>
+        </div>
+      </div>
+      <h3 style="font-size:1.05rem; margin-top:24px;">Data quality</h3>
+      <p>A dedicated QA pass caught a real cross-table bug: a sign-correction applied to one table hadn't propagated to a dependent table. Catching this kind of issue before it reaches a dashboard is exactly the discipline reliable analytics requires.</p>
+    </div>
+  </section>
+
+  <section class="case-section">
+    <div class="wrap">
+      <h2><span class="num-label">04</span>SQL &amp; Analysis</h2>
+      <div class="case-two-col">
+        <div>
+          <h3 style="font-size:1.05rem;">SQL analytics</h3>
+          <p>Window functions — <code>RANK</code>, <code>LAG</code>, cumulative <code>SUM</code> — powered revenue trends, win rates, and rep rankings directly in PostgreSQL.</p>
+        </div>
+        <div>
+          <h3 style="font-size:1.05rem;">Funnel &amp; cohort analysis</h3>
+          <p>Funnel and cohort-conversion analysis was built with right-censoring correctly accounted for, so in-progress deals aren't mistakenly counted as losses.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="case-section">
+    <div class="wrap">
+      <h2><span class="num-label">05</span>Forecasting</h2>
+      <p>A probability-weighted pipeline forecasting model was built in Python and backtested against historical outcomes, reaching 22.6% MAPE. A peer-relative variance and alerting system flags at-risk sales reps by comparing each rep against their peer group rather than a single fixed target.</p>
+      <div class="note-box"><strong>The interesting part:</strong> a standard sales-ops heuristic — pipeline coverage below 3x target signals risk — flagged 0 of 40 reps here, not because the business was healthy, but because raw pipeline is an unbounded historical stock being compared against a single month's target, a scoping mismatch the heuristic doesn't account for. Rebuilding the logic as a probability-weighted, peer-relative model instead flagged 10 of 40 reps for coaching — an honest, actionable list.</div>
+    </div>
+  </section>
+
+  <section class="case-section">
+    <div class="wrap">
+      <h2><span class="num-label">06</span>Dashboard</h2>
+      <p>A 4-page interactive Tableau Public dashboard — Executive Summary, Funnel &amp; Cohort, Rep Leaderboard, and Forecast &amp; Variance. Browse it live below, or open it directly in Tableau Public.</p>
+
+      <figure class="figure">
+        <img src="assets/salessight360-executive-summary.png" alt="SalesSight360 Executive Summary page: $419,995.05 total revenue, 51.75% win rate, $518.34 average deal size, a revenue trend line from July 2025 to September 2026, and regional performance bars for East, West, Central, South, and North">
+        <figcaption>Executive Summary — total revenue, win rate, average deal size, revenue trend, and regional performance.</figcaption>
+      </figure>
+
+      <div class="tableau-embed">
+        <iframe src="https://public.tableau.com/views/SalesSight360SalesForecastAnalytics/ExecutiveSummary?:showVizHome=no&:embed=true&:tabs=yes&:toolbar=yes" allowfullscreen loading="lazy" title="SalesSight360 Tableau dashboard"></iframe>
+      </div>
+      <div class="tableau-linkout">
+        <p style="margin:0 0 16px;">This dashboard is best viewed on a larger screen.</p>
+        <a href="https://public.tableau.com/app/profile/manasa.r.krishna/viz/SalesSight360SalesForecastAnalytics/ExecutiveSummary" target="_blank" rel="noopener" class="btn btn-accent">Open Live Dashboard in Tableau Public</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="case-section">
+    <div class="wrap">
+      <h2><span class="num-label">07</span>Key Results</h2>
+      <table class="metric-table">
+        <thead><tr><th>Metric</th><th>Value</th></tr></thead>
+        <tbody>
+          <tr><td>Verified paid revenue analyzed</td><td class="value">$419,995</td></tr>
+          <tr><td>Blended win rate</td><td class="value">51.8%</td></tr>
+          <tr><td>Pipeline forecast correction</td><td class="value">71–74% overstatement corrected</td></tr>
+          <tr><td>Forecast model accuracy (MAPE)</td><td class="value">22.6%</td></tr>
+          <tr><td>Reps flagged for coaching</td><td class="value">10 of 40</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="case-section">
+    <div class="wrap">
+      <h2><span class="num-label">08</span>Challenges &amp; What I Learned</h2>
+      <ul>
+        <li>Caught and fixed a real cross-table data bug during a dedicated QA pass, reinforcing that reliable analytics depends on reliable data — not just a good model.</li>
+        <li>Learned that industry rules of thumb assume data shapes that don't always hold, and that recognizing when a standard technique doesn't fit the data is as important as knowing the technique.</li>
+        <li>Migrated the database layer from SQLite to Postgres mid-project and hit real dialect differences (strict <code>GROUP BY</code>, <code>HAVING</code> alias scoping) worth knowing for any SQL portability work.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="case-section">
+    <div class="wrap">
+      <h2><span class="num-label">09</span>Technology</h2>
+      <div class="chip-row">
+        <span class="chip">Python</span><span class="chip">Pandas</span><span class="chip">SQLAlchemy</span><span class="chip">Faker</span><span class="chip">PostgreSQL</span><span class="chip">SQL — window functions</span><span class="chip">Tableau Public</span><span class="chip">Jupyter Notebook</span><span class="chip">Git / GitHub</span>
+      </div>
+    </div>
+  </section>
+
+  <div class="wrap">
+    <div class="case-cta">
+      <a href="churnwatch.html" class="btn btn-ghost">← Back: ChurnWatch</a>
+      <a href="index.html#contact" class="btn btn-accent">Get in Touch →</a>
+    </div>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">© 2026 Manasa R Krishna. Built with care for data.</div>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>

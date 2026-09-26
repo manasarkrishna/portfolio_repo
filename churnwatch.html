@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ChurnWatch — Case Study | Manasa R Krishna</title>
+<meta name="description" content="ChurnWatch: an end-to-end churn analytics pipeline in PostgreSQL, Python, and Power BI, validated against a logistic regression model.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap">
+    <a href="index.html#top" class="brand">Manasa R Krishna<span>.</span></a>
+    <nav class="main-nav" id="main-nav">
+      <a href="index.html#about">About</a>
+      <a href="index.html#projects">Projects</a>
+      <a href="index.html#experience">Experience</a>
+      <a href="index.html#research">Research</a>
+      <a href="index.html#contact">Contact</a>
+    </nav>
+    <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">☰</button>
+  </div>
+</header>
+
+<main>
+  <section class="case-hero">
+    <div class="wrap">
+      <a href="index.html#projects" class="breadcrumb">← All projects</a>
+      <div class="eyebrow">Customer Retention &amp; Churn Risk Analytics</div>
+      <h1>ChurnWatch</h1>
+      <p class="sub">Finding at-risk customers before they leave — and proving the model actually works.</p>
+      <div class="hero-stat-row">
+        <div class="num">58% <span style="font-size:1rem;color:var(--ink-faint);">vs</span> 18%<small>Churn: declining engagement vs. baseline</small></div>
+        <div class="num">69.6%<small>At-risk revenue caught in backtesting</small></div>
+        <div class="num">72.8%<small>Model recall</small></div>
+      </div>
+      <div class="btn-row">
+        <a href="https://github.com/manasarkrishna/Churnwatch.git" target="_blank" rel="noopener" class="btn btn-primary">GitHub Repository</a>
+        <a href="assets/Manasa_R_Krishna_Resume.pdf" class="btn btn-ghost" download>Download Résumé</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="case-section">
+    <div class="wrap">
+      <h2><span class="num-label">01</span>The Problem</h2>
+      <p>Companies lose subscription revenue every month to customer churn, but most only find out a customer is leaving after they've already cancelled. This project asks: can churn be predicted from behavior before it happens, using data a company already has?</p>
+    </div>
+  </section>
+
+  <section class="case-section">
+    <div class="wrap">
+      <h2><span class="num-label">02</span>The Data</h2>
+      <p>A customer-360 view was built in PostgreSQL from three linked source tables — subscriptions, product usage, and support tickets — covering 7,500+ customer records. CTEs and window functions (<code>LAG</code>, <code>ROW_NUMBER</code>) tracked engagement trends over time and tagged each customer's lifecycle stage.</p>
+      <div class="note-box"><strong>Note:</strong> This dataset is synthetic, generated to reflect realistic churn-driver patterns for a portfolio project — clearly separate from real company data.</div>
+    </div>
+  </section>
+
+  <section class="case-section">
+    <div class="wrap">
+      <h2><span class="num-label">03</span>Approach</h2>
+      <div class="case-two-col">
+        <div>
+          <h3 style="font-size:1.05rem;">Signal analysis first</h3>
+          <p>Rather than running a black-box model immediately, specific hypotheses were tested directly in SQL: does usage decline predict churn? Do support tickets? Failed payments? Each was measured as a churn-rate comparison between groups, not assumed.</p>
+        </div>
+        <div>
+          <h3 style="font-size:1.05rem;">Two models, compared honestly</h3>
+          <p>A weighted rule-based risk score was built first, with each signal's point value set proportional to its measured churn-rate multiplier. A logistic regression model was then trained independently on the same features and benchmarked head-to-head against the rule-based score on identical held-out customers.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="case-section">
+    <div class="wrap">
+      <h2><span class="num-label">04</span>Analysis &amp; Dashboard</h2>
+      <p>The Power BI report (below) tracks churn KPIs, segments customers by plan, geography, tenure, and risk band, and turns the model's output into an operational retention queue with assigned owners and intervention status.</p>
+
+      <figure class="figure">
+        <img src="assets/churnwatch-executive-summary.png" alt="ChurnWatch Executive Summary page: 8K total customers, 17.68% churn rate, 84.33% NRR proxy, $269.7K at-risk MRR, plus a risk-band donut chart and at-risk MRR bar chart">
+        <figcaption>Executive Summary — churn rate, NRR proxy, at-risk MRR, and customer distribution by risk band.</figcaption>
+      </figure>
+
+      <figure class="figure">
+        <img src="assets/churnwatch-segmentation.png" alt="Customer Churn Segmentation page showing churn rate by plan, geography, and tenure bucket">
+        <figcaption>Customer Churn Segmentation — churn rate broken out by plan, geography, and tenure.</figcaption>
+      </figure>
+
+      <figure class="figure">
+        <img src="assets/churnwatch-atrisk-queue.png" alt="At Risk Queue page listing high-risk customers with assigned owner and intervention status">
+        <figcaption>At-Risk Queue — the operational output: high-risk customers with an assigned owner and intervention status.</figcaption>
+      </figure>
+
+      <figure class="figure">
+        <img src="assets/churnwatch-model-insights.png" alt="Model Insights page showing feature importance and rule-based vs model recall, F1, and precision">
+        <figcaption>Model Insights — feature importance (usage decline and unresolved tickets are the top drivers) and rule-based vs. model performance.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="case-section">
+    <div class="wrap">
+      <h2><span class="num-label">05</span>Key Findings</h2>
+      <table class="metric-table">
+        <thead><tr><th>Finding</th><th>Number</th></tr></thead>
+        <tbody>
+          <tr><td>Churn rate — 2+ months of declining engagement</td><td class="value">58%</td></tr>
+          <tr><td>Churn rate — baseline</td><td class="value">18%</td></tr>
+          <tr><td>Risk multiplier from usage decline alone (≥40% drop)</td><td class="value">~5x</td></tr>
+          <tr><td>Model recall (vs. 63.0% rule-based)</td><td class="value">72.8%</td></tr>
+          <tr><td>At-risk revenue caught in backtesting</td><td class="value">69.6%</td></tr>
+          <tr><td>High-risk vs. low-risk band churn differentiation</td><td class="value">~7x</td></tr>
+        </tbody>
+      </table>
+      <div class="note-box"><strong>On accuracy:</strong> only ~18% of customers churn in this dataset, so accuracy alone would be misleading. The model was trained with <code>class_weight='balanced'</code> and evaluated on precision/recall, then translated into a business-impact number — revenue caught vs. missed — rather than left as an abstract statistic.</div>
+    </div>
+  </section>
+
+  <section class="case-section">
+    <div class="wrap">
+      <h2><span class="num-label">06</span>Business Implications</h2>
+      <p>Rather than declaring the rule-based score or the ML model "better," both are reported honestly: they optimize for different things (precision vs. recall), and the trade-off itself is the insight a retention team would need to choose a workflow. The retention queue translates the analysis into assigned owners, SLAs, and recommended actions per segment — moving the project from analysis to something operational.</p>
+      <p><strong>What I'd do differently with real data:</strong> use a true time-based train/test split instead of a random holdout, validate the injected churn-driver patterns against real historical outcomes, and build true Net Revenue Retention once expansion/contraction revenue data is available.</p>
+    </div>
+  </section>
+
+  <section class="case-section">
+    <div class="wrap">
+      <h2><span class="num-label">07</span>Technology</h2>
+      <div class="chip-row">
+        <span class="chip">PostgreSQL</span><span class="chip">SQL — CTEs, window functions</span><span class="chip">Python</span><span class="chip">Pandas</span><span class="chip">NumPy</span><span class="chip">Faker</span><span class="chip">scikit-learn</span><span class="chip">Logistic Regression</span><span class="chip">Power BI</span><span class="chip">DAX</span><span class="chip">Git / GitHub</span>
+      </div>
+    </div>
+  </section>
+
+  <div class="wrap">
+    <div class="case-cta">
+      <a href="index.html#projects" class="btn btn-ghost">← Back to Projects</a>
+      <a href="salessight360.html" class="btn btn-accent">Next: SalesSight360 →</a>
+    </div>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">© 2026 Manasa R Krishna. Built with care for data.</div>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
